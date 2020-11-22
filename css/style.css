@@ -1,0 +1,221 @@
+/*Estilos generales*/
+*{
+    padding: 0px;
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+/*Estilos en el cuerpo*/
+body{
+    background: url('../images/bright_squares.png');
+    background-attachment: fixed;
+}
+/*Estilos en la cabecera*/
+#cabecera{
+    width: 100%;
+    min-height: 73px;
+    background:#FF5733;
+    position: sticky;
+    top:0;
+}
+#cabecera #logo img{
+    width: 2%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-right: 20px;
+    margin-left: 20px;
+    float: left;
+}
+#cabecera ul{
+    width: 100%;
+}
+#cabecera ul li{
+    font-size: 1.1em;
+    float: left;
+    list-style: none;
+    line-height: 73px;
+    
+}
+#cabecera ul li a{
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    padding: 27px 15px;
+    transition: all 0.4s;
+    
+}
+#session{
+    float: right;
+    line-height: 73px;
+    margin-right: 20px;
+    font-weight: bold;
+}
+#cabecera ul li a:hover{
+    background: #FFBA08;
+}
+/*Estilos en el contenido*/
+#contenido{
+    width: 100%;
+    display: block;
+    margin: 0px auto;
+    min-height: calc(100vh - 73px - 50px);
+    
+}
+.general{
+    width: 90%;
+    padding: 0px 10px;
+    display: block;
+    margin: 0px auto;
+}    
+h2{
+    font-size: 1.7em;
+    text-align: center;
+    border-bottom: 2px solid #9D0208;
+    color:#370617;
+    padding: 10px;
+}
+
+form{
+    margin-top: 20px;
+    text-align: center;
+}
+label{
+    margin-top: 10px !important;
+}
+label,input:not([type="radio"]):not([type="submit"]):not([type="reset"]),textarea{
+    display: block;
+    margin: 0px auto;
+    width: 20%;
+    padding: 5px;
+    font-size: 1.1em;
+    outline: none;
+}
+textarea{
+    width: 40%;
+    height: 98px;
+    resize: none;
+}
+input:not([type="radio"]):not([type="submit"]):not([type="reset"]):focus,textarea:focus{
+    border: 2px solid #9D0208;
+}
+input[type="reset"],input[type="submit"]{
+    background:#FF5733;
+    border:none;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin-top:20px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.1em;
+    outline: none;
+    transition: all 0.5s;
+}
+input[type="reset"]:hover,input[type="submit"]:hover{
+    background: #FFBA08;
+    
+}
+#genero{
+    display: block;
+    margin: 0px auto;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+article{
+    display: block;
+    margin: 0px auto;
+    width: 70%;
+    margin-top: 40px !important;
+    margin-bottom: 40px !important;
+    text-align: justify;
+}
+#iconList{
+    width: 8%;
+    float: left;
+    margin-right: 20px;
+}
+.contentList{
+    
+    display: inline-block;
+    width: 65%;
+}
+article .contentList h3{
+    margin-bottom: 15px;
+}
+article .contentList > a,.users > a{
+    
+    background:#FF5733;
+    float: right;
+    margin-right: 5px;
+    margin-top: 10px;
+    padding:5px 10px;
+    color:#000;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.5s;
+}
+article .contentList > a:hover,.users > a:hover{
+    background: #FFBA08;
+}
+article .contentList p{
+    margin-top: 10px;
+}
+article .contentList #meGusta{
+    float: left;
+}
+article .contentList #meGusta span{
+    border: #9D0208 solid 2px;
+    font-weight: bold;
+    padding: 2px 4px;
+    margin-right: 10px;
+}
+article .contentList #meGusta a{
+    
+    color:#D00000;
+    font-weight: bold;
+    
+}
+.user{
+    width: 50% !important;
+}
+.user .contentList > a{
+    display: inline-block;
+    margin-bottom: 10px !important;
+    float: none !important;
+}
+.users > a{
+    float: none !important;
+    width: 50%;
+    display: block;
+    text-align: center;
+    margin:20px auto;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+.correct,.error{
+    margin-top: 5px;
+    color: #046B3A;
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.error{
+    
+    color: #9D0208 !important;
+    
+}
+/*Estilos en el pie de página*/
+footer{
+    
+    width: 100%;
+    height: 50px;
+    background: #370617;
+    text-align: center;
+    
+}
+footer p{
+    line-height: 50px;
+    color: #fff;
+    font-weight: bold;
+}
