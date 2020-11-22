@@ -2,7 +2,7 @@
 //Si el usuario está registrado podrá modificar la noticia
 if(isset($_GET['idUpdate']) && isset($_SESSION['user'])){
     //Capturamos los datos de la noticia que se requiere modidicar
-    $consulta=Consultas::getNotice($_GET['idUpdate'])->fetch_object();
+    $consulta=getNotice($_GET['idUpdate'])->fetch_object();
 }
 if(isset($_POST) && !empty($_POST)){
     //Capturamos lo valores que nos llegan en la variable POST
@@ -37,11 +37,11 @@ if(isset($_POST) && !empty($_POST)){
     else{
         
         if(isset($_GET['idUpdate'])){
-            Consultas::updateNotice($_GET['idUpdate'],trim($titulo),trim($contenido));
+            updateNotice($_GET['idUpdate'],trim($titulo),trim($contenido));
             header('Location: '.URL.'?pag=noticias-list&statusN=ok');
         }
         else{
-            Consultas::createNotice(trim($titulo),trim($contenido));
+            createNotice(trim($titulo),trim($contenido));
             header('Location: '.URL);
         }
         

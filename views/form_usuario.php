@@ -10,7 +10,7 @@ if(isset($_GET['idUpdate']) && !isset($_SESSION['user'])){
 //En el caso de que si estemos logueados si que podremos
 elseif(isset($_GET['idUpdate']) && isset($_SESSION['user'])){
     //Capturamos los datos del usuario que se require modificar
-    $consulta=Consultas::getUser($_GET['idUpdate'])->fetch_object();
+    $consulta=getUser($_GET['idUpdate'])->fetch_object();
 }
 if(isset($_POST) && !empty($_POST)){
     
@@ -100,11 +100,11 @@ if(isset($_POST) && !empty($_POST)){
     //En el caso de que no haya errores se realizara la inserción del usuario o actualización, segun la petición que se haya pedido
     else{
         if(isset($_GET['idUpdate'])){
-            Consultas::updateUser($_GET['idUpdate'],$nombre,$pass,$email,(int)$edad,$fechaNac,$direccion,$codigoPos,$provincia,$genero);
+            updateUser($_GET['idUpdate'],$nombre,$pass,$email,(int)$edad,$fechaNac,$direccion,$codigoPos,$provincia,$genero);
             header('Location: '.URL.'?pag=users-list&statusU=ok');
         }
         else{
-            Consultas::createUsers($nombre,$pass,$email,(int)$edad,$fechaNac,$direccion,$codigoPos,$provincia,$genero);
+            createUsers($nombre,$pass,$email,(int)$edad,$fechaNac,$direccion,$codigoPos,$provincia,$genero);
         
             header('Location: '.URL.'?pag=users-list&statusU=ok');
         }
@@ -139,7 +139,7 @@ if(isset($_POST) && !empty($_POST)){
             <input type="text" name="nombre" maxlength="50"  
             <?php /*Petición de Update*/
                 if(isset($_GET['idUpdate'])):?>
-                value="<?=$consulta->Nombre?>"
+                value="<?=$consulta->nombre?>"
             <?php endif?>/>
             
             <!--Genero-->
@@ -151,13 +151,13 @@ if(isset($_POST) && !empty($_POST)){
                 <span>Masculino</span>
                 <input type="radio" value="Masculino" name="genero"
                 <?php /*Petición de Update*/
-                    if(isset($_GET['idUpdate']) && $consulta->Genero=="Masculino"):?>
+                    if(isset($_GET['idUpdate']) && $consulta->genero=="Masculino"):?>
                         checked
                 <?php endif?>/>        
                 <span>Femenino</span>
                 <input type="radio" value="Femenino" name="genero"
                 <?php /*Petición de Update*/
-                    if(isset($_GET['idUpdate']) && $consulta->Genero=="Femenino"):?> 
+                    if(isset($_GET['idUpdate']) && $consulta->genero=="Femenino"):?> 
                         checked
                 <?php endif?>/>
             </div>
@@ -169,7 +169,7 @@ if(isset($_POST) && !empty($_POST)){
             <?php endif?>
             <input type="text" name="fechaNac" maxlength="10"
             <?php if(isset($_GET['idUpdate'])):?>
-                value="<?=date("d/m/Y", strtotime($consulta->Fecha_nacimiento))?>"
+                value="<?=date("d/m/Y", strtotime($consulta->fecha_nacimiento))?>"
             <?php endif?>/>
              
             <!--Edad-->
@@ -177,7 +177,7 @@ if(isset($_POST) && !empty($_POST)){
             <input type="number" name="edad" max="90" min="12" maxlength="2"
             <?php /*Petición de Update*/
                 if(isset($_GET['idUpdate'])):?>
-                value="<?=$consulta->Edad?>"
+                value="<?=$consulta->edad?>"
             <?php endif?>/>
 
             <!--Dirección-->
@@ -189,7 +189,7 @@ if(isset($_POST) && !empty($_POST)){
             <input type="text" name="dir" maxlength="100"
             <?php /*Petición de Update*/
                 if(isset($_GET['idUpdate'])):?>
-                    value="<?=$consulta->Direccion?>"
+                    value="<?=$consulta->direccion?>"
             <?php endif?>/>
             
             <!--Código postal-->
@@ -200,7 +200,7 @@ if(isset($_POST) && !empty($_POST)){
             <input type="text" name="postal" maxlength="5"
             <?php /*Petición de Update*/ 
                 if(isset($_GET['idUpdate'])):?>
-                value="<?=$consulta->Codigo_postal?>"
+                value="<?=$consulta->codigo_postal?>"
             <?php endif?>/>
             
             <!--Provincia-->
@@ -211,7 +211,7 @@ if(isset($_POST) && !empty($_POST)){
             <input type="text" name="provincia" maxlength="30"
             <?php /*Petición de Update*/ 
                 if(isset($_GET['idUpdate'])):?>
-                value="<?=$consulta->Provincia?>"
+                value="<?=$consulta->provincia?>"
             <?php endif?>/>
           
             <!--Email-->
@@ -223,7 +223,7 @@ if(isset($_POST) && !empty($_POST)){
             <input type="email" name="email" maxlength="100"
             <?php /*Petición de Update*/
                 if(isset($_GET['idUpdate'])):?>
-                value="<?=$consulta->Email?>"
+                value="<?=$consulta->email?>"
             <?php endif?>/>
             
             <!--

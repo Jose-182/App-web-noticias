@@ -16,7 +16,7 @@ class Utils{
                 setcookie ("userOut", "", time() - 3600);
             }
             if(!isset($_COOKIE['userLogin'])){
-                setcookie('userLogin',$_SESSION['user']->Nombre);
+                setcookie('userLogin',$_SESSION['user']->nombre);
             }
             
         }

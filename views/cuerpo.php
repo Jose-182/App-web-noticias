@@ -1,6 +1,7 @@
 <?php
     
-    $noticias=Consultas::getNoticias();
+    $noticias=getNoticias();
+    
     
 ?>
 

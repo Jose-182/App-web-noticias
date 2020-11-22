@@ -24,7 +24,7 @@ if(isset($_POST) && !empty($_POST)){
     //Si no existen errores consultaremos a la base de datos si el email introducido está registrado
     elseif(empty($errors)){
         
-        $consulta=Consultas::startSessionUser($email);
+        $consulta = startSessionUser($email);
         
         if($consulta->num_rows!=1){
             $errors['emailNull']="El email no esta registrado";
@@ -35,7 +35,7 @@ if(isset($_POST) && !empty($_POST)){
             
             $result=$consulta->fetch_object();
             
-            if(password_verify($pass,$result->Contrasenya)){
+            if(password_verify($pass,$result->contrasenya)){
                 
                 $_SESSION['user']=$result;
                 

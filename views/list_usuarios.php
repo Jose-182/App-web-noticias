@@ -11,7 +11,7 @@ if(!isset($_GET['statusU'])){
 //Comprobamos si nos llegan peticiones para borrar usurios con sesión iniciada
 if(isset($_GET['idDelete']) && $_SESSION['user']){
     
-    Consultas::deleteUser($_GET['idDelete']);
+    deleteUser($_GET['idDelete']);
     
     header('Location: '.URL.'?pag=users-list&statusU=fail');
 }
@@ -55,7 +55,7 @@ elseif(isset($_GET['idDelete'])){
             </div>   
     </article>
     
-    <?php $users=Consultas::getUsers(); 
+    <?php $users=getUsers(); 
     while($user = $users->fetch_object()):?>
 
         <article class="user">
@@ -63,8 +63,8 @@ elseif(isset($_GET['idDelete'])){
             <div class="contentList">    
                 <h3><?=$user->nombre?></h3>
                 <p><?=$user->email?></p>
-                <a href="?pag=users-list&idDelete=<?=$user->Id?>">Borrar</a>
-                <a href="?pag=create-user&idUpdate=<?=$user->Id?>">Editar</a>
+                <a href="?pag=users-list&idDelete=<?=$user->id?>">Borrar</a>
+                <a href="?pag=create-user&idUpdate=<?=$user->id?>">Editar</a>
             </div>   
         </article>
     <?php endwhile;?>

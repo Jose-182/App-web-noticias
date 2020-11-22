@@ -30,7 +30,7 @@
             <?php endif; ?>    
             <!--Si hay un usuario registrado tendra un saludo en la parte derecha del header-->
             <?php if(isset($_SESSION['user'])):?>
-                <p id="session">Hola, <?=$_SESSION['user']->Nombre?></p>
+                <p id="session">Hola, <?=$_SESSION['user']->nombre?></p>
             <?php endif; ?>
         </ul>
                 

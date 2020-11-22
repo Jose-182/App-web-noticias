@@ -8,7 +8,7 @@ if(!isset($_GET['statusN'])){
     Utils::deleteSession('deleteNoticeFail');
 }
 
-$noticias = Consultas::getAllNoticias();
+$noticias = getAllNoticias();
 
 if (!isset($_SESSION['num'])) {
     $_SESSION['num'] = 0;
@@ -16,7 +16,7 @@ if (!isset($_SESSION['num'])) {
 //Cuando se pulse el botón de like de una noticia actualizaremos el valor de la cookie y el valor en la base de datos.
 if (isset($_GET['idNewsLike'])) {
 
-    Consultas::updateLikes($_GET['idNewsLike']);
+    updateLikes($_GET['idNewsLike']);
 
     setcookie('likes', (int)$_GET['numLikes'] + 1);
     
@@ -35,7 +35,7 @@ elseif (isset($_GET['ejemploLikes'])) {
 }
 //Si existe usuario logueado se podra borrar la noticia.
 if (isset($_GET['id']) && isset($_SESSION['user'])) {
-    Consultas::deleteNotice($_GET['id']);
+    deleteNotice($_GET['id']);
     header('Location:'.URL.'?pag=noticias-list&statusN=ok');
 }
 //Si no existe usuario logueado no se tendrán permisos de borrado.
