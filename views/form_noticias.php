@@ -70,10 +70,10 @@ if(isset($_POST) && !empty($_POST)){
             
             <input type="text" name="title" 
             <?php if(isset($_GET['idUpdate'])):?>
-                value="<?=$consulta->Titulo?>"
+                value="<?=$consulta->titulo?>"
             <?php endif?> maxlength="100"/>
             <label for="content">Contenido</label>
-            <textarea name="content" maxlength="300"><?php if(isset($_GET['idUpdate'])):?><?=$consulta->Contenido?><?php endif;?></textarea>
+            <textarea name="content" maxlength="300"><?php if(isset($_GET['idUpdate'])):?><?=$consulta->contenido?><?php endif;?></textarea>
             
             <?php if(isset($_SESSION['errRegisNotice']['vacio'])):?>
                 <span class="error"><?=$_SESSION['errRegisNotice']['vacio']?></span>

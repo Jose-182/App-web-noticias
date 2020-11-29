@@ -36,12 +36,15 @@ function createUsers($nombre,$pass,$email,$edad,$fechaNac,$dir,$codPos,$provinci
     //Encriptamos la contraseña antes de insertarla en la base de datos.
     $passEncrypt=password_hash($pass, PASSWORD_BCRYPT, ['cost'=>4]);
 
-    $sql="INSERT INTO Usuarios VALUES(null,'$nombre','$passEncrypt','$email',$edad,"
+    $sql="INSERT INTO usuarios VALUES(null,'$nombre','$passEncrypt','$email',$edad,"
     ."STR_TO_DATE(REPLACE('$fechaNac','/','.') ,GET_FORMAT(date,'EUR')),'$dir','$codPos','$provincia','$genero');";
 
-    $consulta=connect()->query($sql);
+    $consulta=$GLOBALS['conexion']->query($sql);
 
     //Crearemos una sesión tanto si la inserción es satisfactoria como si no.
+    if(!$consulta){
+        printf("Errormessage: %s\n", $GLOBALS['conexion']->error);
+    }
     if($consulta){
         $_SESSION['insertOk']="El usuario se a registrado correctamente";
     }
@@ -53,7 +56,7 @@ function createUsers($nombre,$pass,$email,$edad,$fechaNac,$dir,$codPos,$provinci
 function createNotice($titulo,$content){
         
     //Al solo poder crear noticias si se esta registrado, añadiremos como autor de la noticia al usuario registrado que la ha creado.
-    $autor=$_SESSION['user']->Nombre;
+    $autor=$_SESSION['user']->nombre;
     
     $sql="INSERT INTO noticias VALUES(null,'$titulo','$content','$autor',CURTIME(),DEFAULT);";
     

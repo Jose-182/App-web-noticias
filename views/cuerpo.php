@@ -2,7 +2,6 @@
     
     $noticias=getNoticias();
     
-    
 ?>
 
 <!--Cuando creemos noticias o usuarios se nos redirigirá a esta página y se nos informara mediante una sesión de como a ido la inserción-->

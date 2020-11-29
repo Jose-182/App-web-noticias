@@ -72,8 +72,8 @@ elseif (isset($_GET['id'])) {
             <p>Hora de creacion</p>
             <p>Autor</p>
             <p id="meGusta"><span><?= $_SESSION['num'] ?></span><a href="index.php?pag=noticias-list&ejemploLikes=<?= $_SESSION['num'] ?>">Me gusta</a></p>
-            <a href="index.php?pag=noticias-list&ejemploDiseño=deleted">Editar</a>
-            <a href="index.php?pag=noticias-list&ejemploDiseño=update">Borrar</a>
+            <a href="index.php?pag=noticias-list&ejemploDiseño=update">Editar</a>
+            <a href="index.php?pag=noticias-list&ejemploDiseño=deleted">Borrar</a>
         </div>
     </article>
     <!--Si no hay noticas en la base de datos no se ejecutara el bucle while para mostrarlas-->

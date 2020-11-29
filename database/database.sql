@@ -5,9 +5,9 @@ create database if not exists M07;
 use M07;
 
 create table usuarios(
-    id int auto_increment,
+    id int AUTO_INCREMENT,
     nombre varchar(100),
-    contrasenya varchar(50),
+    contrasenya varchar(100),
     email varchar(150),
     edad int,
     fecha_nacimiento date,
@@ -20,12 +20,12 @@ create table usuarios(
 engine INNODB;
 
 create table noticias(
-    id int auto_increment,
+    id int AUTO_INCREMENT,
     titulo varchar(100),
     contenido varchar(300),
     autor varchar(30),
     hora_creacion time,
-    likes int,
+    likes int DEFAULT 0,
     primary key(id)
 )
 engine INNODB;

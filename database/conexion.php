@@ -1,6 +1,4 @@
 <?php
-//Creamos una clase para crear la conexión
-
 //Creamos una función estatica para conectarnos y a la vez controlamos esa conexión por si la base de datos no está en funcionamiento
 function connect(){
         

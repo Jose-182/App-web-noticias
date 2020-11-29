@@ -49,7 +49,7 @@ else{
     require_once 'views/cuerpo.php';
 }
 
-
-
 require_once 'views/footer.php';
 
+//Para terminar siempre cerraremos la conexión
+connect()->close();

@@ -35,7 +35,9 @@ if(isset($_POST) && !empty($_POST)){
             
             $result=$consulta->fetch_object();
             
-            if(password_verify($pass,$result->contrasenya)){
+            $validacionPass=password_verify($pass,$result->contrasenya);
+
+            if($validacionPass){
                 
                 $_SESSION['user']=$result;
                 

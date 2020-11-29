@@ -30,4 +30,7 @@ class Utils{
             }
         }
     }
+    public static function connectionClose($conexion){
+        $conexion->close();
+    }
 }
