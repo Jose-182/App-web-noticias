@@ -208,6 +208,9 @@ article .contentList #meGusta a{
 .delete{
     text-align: left;
 }
+.news{
+    text-align: right;
+}
 /*Estilos en el pie de página*/
 footer{
     

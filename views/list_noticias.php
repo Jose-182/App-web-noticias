@@ -34,12 +34,12 @@ elseif (isset($_GET['ejemploLikes'])) {
     header('Location:'.URL.'?pag=noticias-list');
 }
 //Si existe usuario logueado se podra borrar la noticia.
-if (isset($_GET['id']) && isset($_SESSION['user'])) {
-    deleteNotice($_GET['id']);
+if (isset($_GET['actionDelete']) && isset($_SESSION['user'])) {
+    deleteNotice($_GET['idDelete']);
     header('Location:'.URL.'?pag=noticias-list&statusN=ok');
 }
 //Si no existe usuario logueado no se tendrán permisos de borrado.
-elseif (isset($_GET['id'])) {
+elseif (isset($_GET['idDelete'])&& !isset($_SESSION['user'])) {
     $_SESSION['pagNoticeFail'] = "Solo los usuarios registrados pueden realizar eso";
     header('Location:'.URL.'?pag=noticias-list&statusN=fail');
 }
@@ -88,8 +88,14 @@ elseif (isset($_GET['id'])) {
                     <p><?= $noticia->hora_creacion ?></p>
                     <p><?= $noticia->autor ?></p>
                     <p id="meGusta"><span><?= $noticia->likes ?></span><a href="index.php?pag=noticias-list&idNewsLike=<?= $noticia->id ?>&numLikes=<?= $noticia->likes ?>">Me gusta</a></p>
-                    <a href="index.php?pag=create-noticia&idUpdate=<?= $noticia->id ?>">Editar</a>
-                    <a href="index.php?pag=noticias-list&id=<?= $noticia->id ?>">Borrar</a>
+                    <?php if(isset($_GET['idDelete']) && $_GET['idDelete']==$noticia->id):?>
+                        <span class="error delete news">¿Estás seguro de que quieres eliminar la noticia?</span>
+                        <a href="?pag=noticias-list">No</a>
+                        <a href="?pag=noticias-list&idDelete=<?=$noticia->id?>&actionDelete=true">Si</a>
+                    <?php else:?>
+                        <a href="?pag=create-noticia&idUpdate=<?= $noticia->id ?>">Editar</a>
+                        <a href="?pag=noticias-list&idDelete=<?= $noticia->id ?>">Borrar</a>
+                    <?php endif ?>    
                 </div>
             </article>
         <?php endwhile; ?>
