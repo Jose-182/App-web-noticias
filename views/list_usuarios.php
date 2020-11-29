@@ -9,14 +9,14 @@ if(!isset($_GET['statusU'])){
     Utils::deleteSession('insertFail'); 
 }
 //Comprobamos si nos llegan peticiones para borrar usurios con sesión iniciada
-if(isset($_GET['idDelete']) && $_SESSION['user']){
+if(isset($_GET['actionDelete']) && isset($_SESSION['user'])){
     
     deleteUser($_GET['idDelete']);
     
     header('Location: '.URL.'?pag=users-list&statusU=fail');
 }
 //En el caso de que llegue una petición sin sesión iniciada no estará autorizada
-elseif(isset($_GET['idDelete'])){
+elseif(isset($_GET['idDelete']) && !isset($_SESSION['user'])){
     
     $_SESSION['notAuthorized']="Solo los usuarios registrados pueden realizar eso";
 
@@ -63,8 +63,14 @@ elseif(isset($_GET['idDelete'])){
             <div class="contentList">    
                 <h3><?=$user->nombre?></h3>
                 <p><?=$user->email?></p>
-                <a href="?pag=users-list&idDelete=<?=$user->id?>">Borrar</a>
-                <a href="?pag=create-user&idUpdate=<?=$user->id?>">Editar</a>
+                <?php if(isset($_GET['idDelete']) && $_GET['idDelete']==$user->id):?>
+                    <span class="error delete">¿Estás seguro de que quieres eliminar el usuario?</span>
+                    <a href="?pag=users-list&idDelete=<?=$user->id?>&actionDelete=true">Si</a>
+                    <a href="?pag=users-list">No</a>
+                <?php else:?>   
+                    <a href="?pag=users-list&idDelete=<?=$user->id?>">Borrar</a>
+                    <a href="?pag=create-user&idUpdate=<?=$user->id?>">Editar</a>
+                <?php endif ?>
             </div>   
         </article>
     <?php endwhile;?>

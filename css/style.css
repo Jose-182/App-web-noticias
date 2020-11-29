@@ -205,6 +205,9 @@ article .contentList #meGusta a{
     color: #9D0208 !important;
     
 }
+.delete{
+    text-align: left;
+}
 /*Estilos en el pie de página*/
 footer{
     
