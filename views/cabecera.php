@@ -14,7 +14,7 @@
         <div id="logo"><img src="images/newsLogo.png" alt="logo"></div>
 
         <ul>
-            <li><a href="?pag=inicio">Inicio</a></li>
+            <li><a href="<?=URL?>">Inicio</a></li>
             <li><a href="?pag=users-list">Usuarios</a></li>
             <li><a href="?pag=noticias-list">Noticias</a></li>
             <li><a href="?pag=create-user">Crear usuarios</a></li>

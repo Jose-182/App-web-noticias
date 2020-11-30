@@ -73,7 +73,10 @@ elseif(isset($_GET['idDelete']) && !isset($_SESSION['user'])){
                 <?php endif ?>
             </div>   
         </article>
-    <?php endwhile;?>
+    <?php 
+        endwhile;
+        connect()->close();
+    ?>
     
 </section>
 

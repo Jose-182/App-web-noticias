@@ -40,6 +40,8 @@ if(isset($_POST) && !empty($_POST)){
             if($validacionPass){
                 
                 $_SESSION['user']=$result;
+
+                connect()->close();
                 
                 header('Location: '.URL);
             }
@@ -47,6 +49,7 @@ if(isset($_POST) && !empty($_POST)){
                 $errors['passIncorret']="La contraseña no es correcta";
             }
         }
+        
     }
     
     if(!empty($errors)){

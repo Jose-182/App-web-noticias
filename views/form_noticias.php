@@ -56,13 +56,13 @@ if(isset($_POST) && !empty($_POST)){
         Si nos llega una petición de actualización añadiremos a los value de los inputs los datos de la noticia registra en la base de datos
     -->
 
-    <h2>Registro de noticias</h2>
-    <?php if(isset($_GET['idUpdate'])):?>
     
+    <?php if(isset($_GET['idUpdate'])):?>
+        <h2>Actualización de noticias</h2>
         <form action="index.php?pag=create-noticia&idUpdate=<?=$_GET['idUpdate']?>" method="POST">
     
     <?php else:?>    
-    
+        <h2>Registro de noticias</h2>
         <form action="index.php?pag=create-noticia" method="POST">    
     
     <?php endif;?>    

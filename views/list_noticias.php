@@ -1,5 +1,5 @@
 <?php
-
+//Eliminamos todoas las sesiones una vez hayan dado la información al usuario.
 if(!isset($_GET['statusN'])){
     Utils::deleteSession('pagNoticeFail');
     Utils::deleteSession('updateNoticeFail');
@@ -39,7 +39,7 @@ if (isset($_GET['actionDelete']) && isset($_SESSION['user'])) {
     header('Location:'.URL.'?pag=noticias-list&statusN=ok');
 }
 //Si no existe usuario logueado no se tendrán permisos de borrado.
-elseif (isset($_GET['idDelete'])&& !isset($_SESSION['user'])) {
+elseif (isset($_GET['idDelete']) && !isset($_SESSION['user'])) {
     $_SESSION['pagNoticeFail'] = "Solo los usuarios registrados pueden realizar eso";
     header('Location:'.URL.'?pag=noticias-list&statusN=fail');
 }
@@ -54,7 +54,7 @@ elseif (isset($_GET['idDelete'])&& !isset($_SESSION['user'])) {
     <?php elseif (isset($_SESSION['updateNoticeFail'])) : ?>
         <span class="error"><?= $_SESSION['updateNoticeFail'] ?></span>
     <?php elseif (isset($_SESSION['updateNoticeOk'])) : ?>
-        <span class="error"><?= $_SESSION['updateNoticeOk'] ?></span>
+        <span class="correct"><?= $_SESSION['updateNoticeOk'] ?></span>
     <?php elseif (isset($_SESSION['pagNoticeFail'])) : ?>
         <span class="error"><?= $_SESSION['pagNoticeFail'] ?></span>
     <?php endif ?>
@@ -98,6 +98,9 @@ elseif (isset($_GET['idDelete'])&& !isset($_SESSION['user'])) {
                     <?php endif ?>    
                 </div>
             </article>
-        <?php endwhile; ?>
+        <?php 
+            endwhile;
+            connect()->close(); 
+        ?>
     <?php endif; ?>
 </section>

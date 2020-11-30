@@ -11,9 +11,7 @@ require_once 'views/cabecera.php';
 if(isset($_GET) && !empty($_GET)){
     
     switch($_GET['pag']){
-        case 'inicio':
-            require_once 'views/cuerpo.php';
-        break;
+        
         case 'users-list':
             require_once 'views/list_usuarios.php';
         break; 
@@ -51,5 +49,4 @@ else{
 
 require_once 'views/footer.php';
 
-//Para terminar siempre cerraremos la conexión
-connect()->close();
+
