@@ -1,20 +1,18 @@
 <?php
 //Eliminamos todoas las sesiones una vez hayan dado la información al usuario.
-if(!isset($_GET['statusN'])){
+if(!isset($_GET['statusNews'])){
     Utils::deleteSession('pagNoticeFail');
     Utils::deleteSession('updateNoticeFail');
     Utils::deleteSession('updateNoticeOk');
     Utils::deleteSession('deleteNoticeOk');
     Utils::deleteSession('deleteNoticeFail');
 }
-
-$noticias = getAllNoticias();
-
-if (!isset($_SESSION['num'])) {
-    $_SESSION['num'] = 0;
-}
-//Cuando se pulse el botón de like de una noticia actualizaremos el valor de la cookie y el valor en la base de datos.
-if (isset($_GET['idNewsLike'])) {
+//Las peticiones de borrado/modificado/likes por parte del cliente nos van a llegar por parametros GET.
+/*
+    Cuando se pulse el botón de like de una noticia actualizaremos el valor de la cookie y el valor en la base de datos.
+    Solo pasará esto cuando el usuario que de like este registrado y no sea anonimo.
+*/
+if (isset($_GET['idNewsLike']) && isset($_SESSION['user'])) {
 
     updateLikes($_GET['idNewsLike']);
 
@@ -28,25 +26,25 @@ if (isset($_GET['idNewsLike'])) {
     }
     
 }
-//Actualización de los likes en la noticia de ejemplo.
-elseif (isset($_GET['ejemploLikes'])) {
-    $_SESSION['num'] = (int)$_GET['ejemploLikes'] + 1;
-    header('Location:'.URL.'?pag=noticias-list');
+elseif(isset($_GET['idNewsLike']) && !isset($_SESSION['user'])){
+    $_SESSION['pagNoticeFail'] = "Solo los usuarios registrados pueden realizar eso";
+    header('Location:'.URL.'?pag=noticias-list&statusNews=fail');
 }
 //Si existe usuario logueado se podra borrar la noticia.
 if (isset($_GET['actionDelete']) && isset($_SESSION['user'])) {
     deleteNotice($_GET['idDelete']);
-    header('Location:'.URL.'?pag=noticias-list&statusN=ok');
+    header('Location:'.URL.'?pag=noticias-list&statusNews=ok');
 }
 //Si no existe usuario logueado no se tendrán permisos de borrado.
 elseif (isset($_GET['idDelete']) && !isset($_SESSION['user'])) {
     $_SESSION['pagNoticeFail'] = "Solo los usuarios registrados pueden realizar eso";
-    header('Location:'.URL.'?pag=noticias-list&statusN=fail');
+    header('Location:'.URL.'?pag=noticias-list&statusNews=fail');
 }
 ?>
-<!--Avisaremos al usuario cuando realice acciones de modificación o inserciones en las noticias-->
+<!--Creamos los contenedores donde ira la información que podrá ver el cliente de las noticias registradas-->
 <section class="general noticias">
     <h2>Todas las noticias</h2>
+    <!--Avisaremos al cliente con sesiones cuando realice acciones de modificación/inserción/eliminación en la table de noticias-->
     <?php if (isset($_SESSION['deleteNoticeOk'])) : ?>
         <span class="correct"><?= $_SESSION['deleteNoticeOk'] ?></span>
     <?php elseif (isset($_SESSION['deleteNoticeFail'])) : ?>
@@ -58,7 +56,7 @@ elseif (isset($_GET['idDelete']) && !isset($_SESSION['user'])) {
     <?php elseif (isset($_SESSION['pagNoticeFail'])) : ?>
         <span class="error"><?= $_SESSION['pagNoticeFail'] ?></span>
     <?php endif ?>
-    
+    <!--Noticias de ejemplo-->
     <article class="noticia">
         <img id="iconList" src="images/iconNews2.png" alt="news">
         <div class="contentList">
@@ -71,15 +69,17 @@ elseif (isset($_GET['idDelete']) && !isset($_SESSION['user'])) {
             </p>
             <p>Hora de creacion</p>
             <p>Autor</p>
-            <p id="meGusta"><span><?= $_SESSION['num'] ?></span><a href="index.php?pag=noticias-list&ejemploLikes=<?= $_SESSION['num'] ?>">Me gusta</a></p>
+            <p id="meGusta"><span>10</span><a href="index.php?pag=noticias-list&ejemploLikes=likes">Me gusta</a></p>
             <a href="index.php?pag=noticias-list&ejemploDiseño=update">Editar</a>
             <a href="index.php?pag=noticias-list&ejemploDiseño=deleted">Borrar</a>
         </div>
     </article>
     <!--Si no hay noticas en la base de datos no se ejecutara el bucle while para mostrarlas-->
-    <?php if ($noticias->num_rows > 0):?>
+    <?php $noticias = getAllNoticias();
+    if ($noticias->num_rows > 0):?>
         <!--En el caso de que haya alguna noticia si se mostrará-->
         <?php while ($noticia = $noticias->fetch_object()):?>
+            <!--Noticias de la base de datos-->
             <article class="noticia">
                 <img id="iconList" src="images/iconNews2.png" alt="news">
                 <div class="contentList">
@@ -100,6 +100,7 @@ elseif (isset($_GET['idDelete']) && !isset($_SESSION['user'])) {
             </article>
         <?php 
             endwhile;
+            //Cerramos la conexión despues de la consulta.
             connect()->close(); 
         ?>
     <?php endif; ?>

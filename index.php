@@ -22,16 +22,7 @@ if(isset($_GET) && !empty($_GET)){
             require_once 'views/form_usuario.php';
         break;
         case 'create-noticia':
-            //En el caso de que no haya una sesión de usuario iniciada no podremos acceder a la página para crear o modificar noticias.
-            if(!isset($_SESSION['user'])){
-                
-                $_SESSION['pagNoticeFail']="Solo los usuarios registrados pueden modificar/crear/borrar noticias";
-                
-                header('Location: '.URL.'?pag=noticias-list&statusN=notAuthorized');
-            }
-            else{
-                require_once 'views/form_noticias.php';
-            }
+            require_once 'views/form_noticias.php';
         break;      
         case 'login':
             require_once 'views/login.php';
@@ -43,7 +34,6 @@ if(isset($_GET) && !empty($_GET)){
 }
 //En el caso de que no nos llegue el parametro GET, usaremos la página por defecto.
 else{
-    Utils::cookieSession();
     require_once 'views/cuerpo.php';
 }
 

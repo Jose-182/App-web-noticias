@@ -50,7 +50,7 @@ function createUsers($nombre,$pass,$email,$edad,$fechaNac,$dir,$codPos,$provinci
 
     $consulta=$conexion->query($sql);
 
-    //Crearemos una sesión tanto si la inserción es satisfactoria como si no.
+    //Crearemos una sesión tanto si la inserción es satisfactoria como si no para informar al cliente.
     if($consulta){
         $_SESSION['insertOk']="El usuario se a registrado correctamente";
     }
@@ -58,6 +58,7 @@ function createUsers($nombre,$pass,$email,$edad,$fechaNac,$dir,$codPos,$provinci
         $_SESSION['insertFail']="Error al insertar el usuario";
         printf("Errormessage: %s\n", $conexion->error);
     }
+    //Cerramos la conexión
     $conexion->close();
 }
 //Creamos una función para insertar noticias en la base de datos (los datos nos llegarán desde el formulario de registro de noticias).
@@ -72,6 +73,7 @@ function createNotice($titulo,$content){
     
     $consulta=$conexion->query($sql);
 
+    //Crearemos una sesión tanto si la inserción es satisfactoria como si no para informar al cliente.
     if($consulta){
         $_SESSION['insertOk']="La noticia se a registrado correctamente";
     }
@@ -182,7 +184,7 @@ function updateLikes($id){
    
     $conexion->close();    
 }
-//Creamos una consulta para comprobar si el email de acceso que usa el usuario esta registrado en la base de dato.
+//Creamos una consulta para comprobar si el email de acceso que usa el usuario esta registrado en la base de datos.
 function startSessionUser($email){
     
     $conexion=connect();

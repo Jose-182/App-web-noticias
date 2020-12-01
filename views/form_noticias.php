@@ -1,13 +1,18 @@
 <?php
+//Si no existe un usuario registrado se mandara al cliente a la página de inicio
+if(!isset($_SESSION['user'])){
+    $_SESSION['pagNoticeFail']="Solo los usuarios registrados pueden modificar/crear/borrar noticias";
+    header('Location: '.URL.'?pag=noticias-list&statusNews=fail');
+}
 //Si el usuario está registrado podrá modificar la noticia
 if(isset($_GET['idUpdate']) && isset($_SESSION['user'])){
-    //Capturamos los datos de la noticia que se requiere modidicar
+    //Capturamos los datos de la noticia que se requiere modidicar con el valor de su id en un parametro GET
     $consulta=getNotice($_GET['idUpdate'])->fetch_object();
 }
 if(isset($_POST) && !empty($_POST)){
     //Capturamos lo valores que nos llegan en la variable POST
-    $titulo=$_POST['title'];
-    $contenido=$_POST['content'];
+    $titulo=trim($_POST['title']);
+    $contenido=trim($_POST['content']);
 
     //Creamos una variable para los errores
     $errors=array();
@@ -20,11 +25,13 @@ if(isset($_POST) && !empty($_POST)){
     if(strlen($contenido)>300){
         $errors['maxLength']="No se pueden superar los 300 caracteres en el contenido";
     }
-    //Si se produce algún error se notificara 
+    //Si se produce algún error se notificará
     if(!empty($errors)){
         
+        //Creamos la sesión con los errores que hayan podido ocurrir al rellenar el formulario.
         $_SESSION['errRegisNotice']=$errors;
         
+        //Se volveran a poner los valores antiguos de la noticia en los inputs.
         if(isset($_GET['idUpdate'])){
             header('Location: '.URL.'?pag=create-noticia&idUpdate='.$_GET['idUpdate']);
         }
@@ -33,15 +40,16 @@ if(isset($_POST) && !empty($_POST)){
         }
         
     }
-    //En el caso de que no hayan errores realizaremos la inserción o el update de la noticia
+    //En el caso de que no hayan errores realizaremos la inserción o el update de la noticia.
     else{
-        
+        //Update
         if(isset($_GET['idUpdate'])){
             updateNotice($_GET['idUpdate'],trim($titulo),trim($contenido));
-            header('Location: '.URL.'?pag=noticias-list&statusN=ok');
+            header('Location: '.URL.'?pag=noticias-list&statusNews=ok');
         }
+        //Insert
         else{
-            createNotice(trim($titulo),trim($contenido));
+            createNotice($titulo,$contenido);
             header('Location: '.URL);
         }
         

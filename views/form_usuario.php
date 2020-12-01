@@ -5,29 +5,28 @@ if(isset($_GET['idUpdate']) && !isset($_SESSION['user'])){
     
     $_SESSION['notAuthorized']="Solo los usuarios registrados pueden realizar eso";
     
-    header('Location: '.URL.'?pag=users-list&statusU=fail');
+    header('Location: '.URL.'?pag=users-list&statusUser=fail');
 }
 //En el caso de que si estemos logueados si que podremos
 elseif(isset($_GET['idUpdate']) && isset($_SESSION['user'])){
-    //Capturamos los datos del usuario que se require modificar
+    //Capturamos los datos del usuario que se requiere modidicar con el valor de su id en un parametro GET
     $consulta=getUser($_GET['idUpdate'])->fetch_object();
 }
 if(isset($_POST) && !empty($_POST)){
     
      
-    //Capturamos todos los parametros que nos llegan por POST
-
-    $nombre=$_POST['nombre'];
+    //Capturamos todos los parametros que nos llegan por POST a la vez que limpiamos posibles espacios en blaco delante o detras de los datos.
+    $nombre=trim($_POST['nombre']);
     $genero= isset($_POST['genero']) ? $_POST['genero'] : false;
     $edad=$_POST['edad'];
-    $fechaNac=$_POST['fechaNac'];
-    $direccion=$_POST['dir'];
-    $codigoPos=$_POST['postal'];
-    $provincia=$_POST['provincia'];
-    $email=$_POST['email'];
+    $fechaNac=trim($_POST['fechaNac']);
+    $direccion=trim($_POST['dir']);
+    $codigoPos=trim($_POST['postal']);
+    $provincia=trim($_POST['provincia']);
+    $email=trim($_POST['email']);
     $pass=$_POST['pass'];
     
-    //Este patron nos ayudara a controlar que el usuario no usa caracteres especiales
+    //Este patron nos ayudara a controlar que el usuario no usa unos carecteres especiales en concreto
     $pattern = '/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/';
     
     //Creamos un array para capturar los errores de inserción
@@ -55,7 +54,7 @@ if(isset($_POST) && !empty($_POST)){
     }
     
     if(preg_match($pattern,$direccion)){
-        $errors['dir']="La direccion no puede contener caracteres especiales";
+        $errors['dir']="La direccion solo puede contener el carácter especial que aparece en el ejemplo";
     }
     
     if(preg_match("/[0-9]/",$provincia)||preg_match($pattern,$provincia)){
@@ -63,7 +62,7 @@ if(isset($_POST) && !empty($_POST)){
     }
     
     if(isset($_GET['idUpdate'])){
-        
+        //La contraseña deberá tener como minimo 6 caracteres
         if(strlen($pass)<6 && strlen($pass)!=0){
             $errors['pass']="La contraseña tine que contener almenos 6 caracteres";
         }
@@ -82,16 +81,17 @@ if(isset($_POST) && !empty($_POST)){
     if(empty($nombre)||empty($edad)||empty($fechaNac)||empty($direccion)||empty($codigoPos)||empty($provincia)||empty($email)){
         $errors['vacio']="No pueden quedar campos vacíos";
     }
-    //En el caso de que se produzca algún error metiendo datos al registrar o actualizar el usuario le informaremos al usuario
+    //En el caso de que se produzca algún error metiendo datos al registrar o actualizar el usuario le informaremos al cliente.
     if(!empty($errors)){
         
         //Creamos una sesión con los errores para mostrarselos al usuario.
         $_SESSION['ErrRegisUser']=$errors;
         
-        
+        //En el caso de peticion de actualización volveran a poner los valores antiguos del usuario en los inputs.
         if(isset($_GET['idUpdate'])){
             header('Location: '.URL.'?pag=create-user&idUpdate='.$_GET['idUpdate']);
         }
+        //En el caso de petición de inserción.
         else{
             header('Location: '.URL.'?pag=create-user');
         }
@@ -99,14 +99,16 @@ if(isset($_POST) && !empty($_POST)){
     }
     //En el caso de que no haya errores se realizara la inserción del usuario o actualización, segun la petición que se haya pedido
     else{
+        //Update
         if(isset($_GET['idUpdate'])){
             updateUser($_GET['idUpdate'],$nombre,$pass,$email,(int)$edad,$fechaNac,$direccion,$codigoPos,$provincia,$genero);
-            header('Location: '.URL.'?pag=users-list&statusU=ok');
+            header('Location: '.URL.'?pag=users-list&statusUser=ok');
         }
+        //Insert
         else{
             createUsers($nombre,$pass,$email,(int)$edad,$fechaNac,$direccion,$codigoPos,$provincia,$genero);
         
-            header('Location: '.URL.'?pag=users-list&statusU=ok');
+            header('Location: '.URL.'?pag=users-list&statusUser=ok');
         }
         
     }
@@ -116,7 +118,8 @@ if(isset($_POST) && !empty($_POST)){
     
     <!--
         Utilizaremos el mismo formulario para realizar la edicion y la creación de los usuarios.
-        Si nos llega una petición de actualización añadiremos a los value de los inputs los datos del usuario registrado en la base de datos
+        Si nos llega una petición de actualización por el parametro GET añadiremos a los value 
+        de los inputs los datos del usuario registrado en la base de datos
     -->
 
     <?php if(isset($_GET['idUpdate'])):?>
@@ -260,6 +263,7 @@ if(isset($_POST) && !empty($_POST)){
 <!--Al acualizar la página borramos los errores para capturar los nuevos si los hay-->
 <?php
 if(empty($_POST)){
+    //Eliminamos la sesión que captrura los errores
     Utils::deleteSession('ErrRegisUser');
    
 }

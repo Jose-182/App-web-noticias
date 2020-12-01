@@ -1,11 +1,9 @@
 <?php
-    
-    $noticias=getNoticias();
-    
+    //Actualizamos la cookie del usuario según este registrado o no.
+    Utils::cookieSession();
 ?>
 
-<!--Cuando creemos noticias o usuarios se nos redirigirá a esta página y se nos informara mediante una sesión de como a ido la inserción-->
-
+<!--Cuando creemos noticias se nos redirigirá a esta página y se nos informara mediante una sesión de como a ido la inserción-->
 <?php if(isset($_SESSION['insertOk'])):?>
     <span class="correct"><?=$_SESSION['insertOk']?></span>
 <?php elseif(isset($_SESSION['insertFail'])):?>
@@ -15,7 +13,7 @@
 <section class="general noticias">
     
     <h2>Ultimas noticias</h2>
-
+    <!--Noticia de ejemplo-->
     <article class="noticia">
         <img id="iconList" src="images/iconNews2.png" alt="news">
         <div class="contentList">
@@ -33,8 +31,9 @@
             
         </div>
     </article>
-    <?php if($noticias->num_rows>0):?>
-
+    <!--Noticias de la base de datos-->
+    <?php $noticias=getNoticias();
+    if($noticias->num_rows>0):?>
         <?php while($noticia = $noticias->fetch_object()):?>
 
             <article class="noticia">

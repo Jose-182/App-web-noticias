@@ -51,7 +51,7 @@ if(isset($_POST) && !empty($_POST)){
         }
         
     }
-    
+    //Si hubiesen errores los capturaremos en una sesión y se los mostraremos al cliente.
     if(!empty($errors)){
         
         $_SESSION['errorLogin']=$errors;
