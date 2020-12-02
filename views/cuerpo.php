@@ -43,7 +43,10 @@
                     <p><?=$noticia->contenido?></p>
                     <p><?=$noticia->hora_creacion?></p>
                     <p><?=$noticia->autor?></p>
-                    <p id="meGusta"><span><?=$noticia->likes?></span><a href="index.php?pag=noticias-list&idNewsLike=<?=$noticia->id?>&numLikes=<?=$noticia->likes?>&local=inicio">Me gusta</a></p>
+                    <p id="meGusta">
+                        <span><?=$noticia->likes?></span>
+                        <a href="index.php?pag=noticias-list&idNewsLike=<?=$noticia->id?>&numLikes=<?=$noticia->likes?>&local=inicio">Me gusta</a>
+                    </p>
                 </div>
             </article>
         <?php endwhile;?>

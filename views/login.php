@@ -24,6 +24,7 @@ if(isset($_POST) && !empty($_POST)){
     //Si no existen errores consultaremos a la base de datos si el email introducido está registrado
     elseif(empty($errors)){
         
+        //Realizamos la consulta para validar el email y la contraseña
         $consulta = startSessionUser($email);
         
         if($consulta->num_rows!=1){
@@ -35,16 +36,19 @@ if(isset($_POST) && !empty($_POST)){
             
             $result=$consulta->fetch_object();
             
+            //Validamos la contraseña
             $validacionPass=password_verify($pass,$result->contrasenya);
-
+            
+            //Correcta
             if($validacionPass){
-                
+                //Creamos la sesión de usuario
                 $_SESSION['user']=$result;
 
                 connect()->close();
                 
                 header('Location: '.URL);
             }
+            //Incorrecta
             else{
                 $errors['passIncorret']="La contraseña no es correcta";
             }
@@ -60,7 +64,7 @@ if(isset($_POST) && !empty($_POST)){
     
 }
 ?>
-
+<!--Cuando el cliente haga submit y tenga errores en las inserciones se le avisará con la sesión de errores creada-->
 <div class="general login">
 <h2>Iniciar sesion</h2>
 
@@ -90,6 +94,7 @@ if(isset($_POST) && !empty($_POST)){
 </div>
 
 <?php
+    //Eliminamos la sesión de errores al actualizar la pagina de nuevo
     if(empty($_POST)){
         Utils::deleteSession('errorLogin');
     }

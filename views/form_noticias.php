@@ -31,10 +31,11 @@ if(isset($_POST) && !empty($_POST)){
         //Creamos la sesión con los errores que hayan podido ocurrir al rellenar el formulario.
         $_SESSION['errRegisNotice']=$errors;
         
-        //Se volveran a poner los valores antiguos de la noticia en los inputs.
+        //Update. Se volveran a poner los valores antiguos de la noticia en los inputs.
         if(isset($_GET['idUpdate'])){
             header('Location: '.URL.'?pag=create-noticia&idUpdate='.$_GET['idUpdate']);
         }
+        //Insert
         else{
             header('Location: '.URL.'?pag=create-noticia');
         }
@@ -61,7 +62,7 @@ if(isset($_POST) && !empty($_POST)){
     
     <!--
         Utilizaremos el mismo formulario para realizar la edicion y la creación de las noticias.
-        Si nos llega una petición de actualización añadiremos a los value de los inputs los datos de la noticia registra en la base de datos
+        Si nos llega una petición de actualización añadiremos a los value de los inputs los datos de la noticia registrada en la base de datos
     -->
 
     
@@ -77,9 +78,12 @@ if(isset($_POST) && !empty($_POST)){
             <label for="title">Titulo</label>
             
             <input type="text" name="title" 
-            <?php if(isset($_GET['idUpdate'])):?>
-                value="<?=$consulta->titulo?>"
-            <?php endif?> maxlength="100"/>
+            <?php //Petición de Update
+                if(isset($_GET['idUpdate'])):?>
+                    value="<?=$consulta->titulo?>"
+                <?php endif?> 
+            maxlength="100"/>
+            
             <label for="content">Contenido</label>
             <textarea name="content" maxlength="300"><?php if(isset($_GET['idUpdate'])):?><?=$consulta->contenido?><?php endif;?></textarea>
             
@@ -87,8 +91,10 @@ if(isset($_POST) && !empty($_POST)){
                 <span class="error"><?=$_SESSION['errRegisNotice']['vacio']?></span>
             <?php endif?>    
             <?php if(isset($_GET['idUpdate'])):?>
+                <!--Petición Update-->
                 <input type="submit" value="Actualizar">    
             <?php else:?>
+                <!--Petición Insert-->
                 <input type="reset">
                 <input type="submit" value="Crear">
             <?php endif?>

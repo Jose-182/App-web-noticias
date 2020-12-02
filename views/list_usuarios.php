@@ -1,5 +1,5 @@
 <?php
-//Eliminamos todas las sesiones una vez hayan dado la información al usuario.
+//Eliminamos todas las sesiones una vez hayan dado la información al cliente.
 if(!isset($_GET['statusUser'])){
     Utils::deleteSession('deleteUserOk');
     Utils::deleteSession('deleteUserFail');
@@ -12,19 +12,19 @@ if(!isset($_GET['statusUser'])){
 
 //Las peticiones de borrado y modificado por parte del cliente nos van a llegar por parametros GET.
 
-//Comprobamos si nos llegan peticiones para borrar usurios con sesión iniciada.
+//Comprobamos si nos llegan peticiones para borrar usurios y existe cliente logueado.
 if(isset($_GET['actionDelete']) && isset($_SESSION['user'])){
     
     deleteUser($_GET['idDelete']);
     
     header('Location: '.URL.'?pag=users-list&statusUser=fail');
 }
-//En el caso de que llegue una petición sin sesión iniciada no estará autorizada
+//En el caso de que llegue una petición sin sesión iniciada no estará autorizada.
 elseif(isset($_GET['idDelete']) && !isset($_SESSION['user'])){
     
     $_SESSION['notAuthorized']="Solo los usuarios registrados pueden realizar eso";
 
-    header('Location: '.URL.'?pag=users-list&statusUser=ok');
+    header('Location: '.URL.'?pag=users-list&statusUser=fail');
 }
 
 ?>
@@ -63,16 +63,18 @@ elseif(isset($_GET['idDelete']) && !isset($_SESSION['user'])){
     if ($users->num_rows > 0):?>
         <!--En el caso de que haya algún usuario si se mostrará-->
         <?php while($user = $users->fetch_object()):?>
-            <!--Usuario de la base de datos-->
+            <!--Usuarios de la base de datos-->
             <article class="user">
                 <img id="iconList" src="images/user.png" alt="user">
                 <div class="contentList">    
                     <h3><?=$user->nombre?></h3>
                     <p><?=$user->email?></p>
+                    <!--Si se hace una petición de borrado-->
                     <?php if(isset($_GET['idDelete']) && $_GET['idDelete']==$user->id):?>
                         <span class="error delete">¿Estás seguro de que quieres eliminar el usuario?</span>
                         <a href="?pag=users-list&idDelete=<?=$user->id?>&actionDelete=true">Si</a>
                         <a href="?pag=users-list">No</a>
+                    <!--Estado inicial-->    
                     <?php else:?>   
                         <a href="?pag=users-list&idDelete=<?=$user->id?>">Borrar</a>
                         <a href="?pag=create-user&idUpdate=<?=$user->id?>">Editar</a>

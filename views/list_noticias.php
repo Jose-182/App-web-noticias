@@ -1,5 +1,5 @@
 <?php
-//Eliminamos todoas las sesiones una vez hayan dado la información al usuario.
+//Eliminamos todoas las sesiones una vez hayan dado la información al cliente.
 if(!isset($_GET['statusNews'])){
     Utils::deleteSession('pagNoticeFail');
     Utils::deleteSession('updateNoticeFail');
@@ -18,14 +18,17 @@ if (isset($_GET['idNewsLike']) && isset($_SESSION['user'])) {
 
     setcookie('likes', (int)$_GET['numLikes'] + 1);
     
+    //Si la petición se hace desde la página de inicio.
     if(isset($_GET['local'])){
         header('Location:'.URL);
     }
+    //Si la petición se hace de la página de listar noticias.
     else{
         header('Location:'.URL.'?pag=noticias-list');
     }
     
 }
+//Si el usuario no está logueado
 elseif(isset($_GET['idNewsLike']) && !isset($_SESSION['user'])){
     $_SESSION['pagNoticeFail'] = "Solo los usuarios registrados pueden realizar eso";
     header('Location:'.URL.'?pag=noticias-list&statusNews=fail');
@@ -56,7 +59,7 @@ elseif (isset($_GET['idDelete']) && !isset($_SESSION['user'])) {
     <?php elseif (isset($_SESSION['pagNoticeFail'])) : ?>
         <span class="error"><?= $_SESSION['pagNoticeFail'] ?></span>
     <?php endif ?>
-    <!--Noticias de ejemplo-->
+    <!--Noticia de ejemplo-->
     <article class="noticia">
         <img id="iconList" src="images/iconNews2.png" alt="news">
         <div class="contentList">
@@ -87,11 +90,16 @@ elseif (isset($_GET['idDelete']) && !isset($_SESSION['user'])) {
                     <p><?= $noticia->contenido ?></p>
                     <p><?= $noticia->hora_creacion ?></p>
                     <p><?= $noticia->autor ?></p>
-                    <p id="meGusta"><span><?= $noticia->likes ?></span><a href="index.php?pag=noticias-list&idNewsLike=<?= $noticia->id ?>&numLikes=<?= $noticia->likes ?>">Me gusta</a></p>
+                    <p id="meGusta">
+                        <span><?= $noticia->likes ?></span>
+                        <a href="index.php?pag=noticias-list&idNewsLike=<?= $noticia->id ?>&numLikes=<?= $noticia->likes ?>">Me gusta</a>
+                    </p>
+                    <!--Si se hace una petición de borrado-->
                     <?php if(isset($_GET['idDelete']) && $_GET['idDelete']==$noticia->id):?>
                         <span class="error delete news">¿Estás seguro de que quieres eliminar la noticia?</span>
                         <a href="?pag=noticias-list">No</a>
                         <a href="?pag=noticias-list&idDelete=<?=$noticia->id?>&actionDelete=true">Si</a>
+                    <!--Estado inicial-->
                     <?php else:?>
                         <a href="?pag=create-noticia&idUpdate=<?= $noticia->id ?>">Editar</a>
                         <a href="?pag=noticias-list&idDelete=<?= $noticia->id ?>">Borrar</a>

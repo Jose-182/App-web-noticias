@@ -35,7 +35,7 @@
         </ul>
                 
     </header> 
-    <!--Este div lo usaremos para meter todo el contenido central del cuerpo y, su etiqueta se cierra en el archivo del footer-->
+    <!--Este div lo usaremos para meter todo el contenido central del cuerpo, su etiqueta se cierra en el archivo footer.php-->
     <div id="contenido">   
 </body>
 </html>

@@ -45,10 +45,13 @@ if(isset($_POST) && !empty($_POST)){
         $errors['fecha']="inserta un fecha valida";
     }
     
-    if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+    if(!filter_var($email,FILTER_VALIDATE_EMAIL) && startSessionUser($email)->num_rows==0){
         $errors['email']="Email no valido";
     }
-    
+    //Si el email ya existe en la base de datos se le avisará al usuario.
+    elseif(startSessionUser($email)->num_rows!=0){
+        $errors['emailExist']="El email introducido ya esta registrado";
+    }
     if(preg_match("/[a-zA-Z]/",$codigoPos) || preg_match($pattern,$codigoPos) || strlen($codigoPos)!=5){
         $errors['postal']="El código postal debe de estar formado por 5 numeros";
     }
@@ -81,13 +84,13 @@ if(isset($_POST) && !empty($_POST)){
     if(empty($nombre)||empty($edad)||empty($fechaNac)||empty($direccion)||empty($codigoPos)||empty($provincia)||empty($email)){
         $errors['vacio']="No pueden quedar campos vacíos";
     }
-    //En el caso de que se produzca algún error metiendo datos al registrar o actualizar el usuario le informaremos al cliente.
+    //En el caso de que se produzca algún error metiendo datos al registrar o actualizar el usuario, informaremos al cliente.
     if(!empty($errors)){
         
         //Creamos una sesión con los errores para mostrarselos al usuario.
         $_SESSION['ErrRegisUser']=$errors;
         
-        //En el caso de peticion de actualización volveran a poner los valores antiguos del usuario en los inputs.
+        //En el caso de peticion de actualización se volverán a poner los valores antiguos del usuario en los inputs.
         if(isset($_GET['idUpdate'])){
             header('Location: '.URL.'?pag=create-user&idUpdate='.$_GET['idUpdate']);
         }
@@ -117,7 +120,7 @@ if(isset($_POST) && !empty($_POST)){
 <div class="general registro">
     
     <!--
-        Utilizaremos el mismo formulario para realizar la edicion y la creación de los usuarios.
+        Utilizaremos el mismo formulario para realizar la modificación y la creación de los usuarios.
         Si nos llega una petición de actualización por el parametro GET añadiremos a los value 
         de los inputs los datos del usuario registrado en la base de datos
     -->
@@ -132,32 +135,38 @@ if(isset($_POST) && !empty($_POST)){
         <form action="index.php?pag=create-user" method="POST">   
     <?php endif?>
     
-            <!--Si se produce un error al meter los datos inyectaremos el dicho error con una eqiqueta span-->
+            <!--Si se produce un error al meter los datos inyectaremos dicho error con una eqiqueta span-->
             
             <!--Nombre-->
             <label for="nombre">Nombre</label>
+            
             <?php if(isset($_SESSION['ErrRegisUser']['nombre'])):?>
                 <span class="error"><?=$_SESSION['ErrRegisUser']['nombre']?></span>
             <?php endif?>
+            
             <input type="text" name="nombre" maxlength="50"  
-            <?php /*Petición de Update*/
+            <?php //Petición de Update
                 if(isset($_GET['idUpdate'])):?>
                 value="<?=$consulta->nombre?>"
             <?php endif?>/>
             
             <!--Genero-->
             <label for="genero">Genero: </label>
+            
             <?php if(isset($_SESSION['ErrRegisUser']['genero'])):?>
                 <span class="error"><?=$_SESSION['ErrRegisUser']['genero']?></span>
             <?php endif?>
+            
             <div id="genero">
                 <span>Masculino</span>
+                
                 <input type="radio" value="Masculino" name="genero"
                 <?php /*Petición de Update*/
                     if(isset($_GET['idUpdate']) && $consulta->genero=="Masculino"):?>
                         checked
                 <?php endif?>/>        
                 <span>Femenino</span>
+                
                 <input type="radio" value="Femenino" name="genero"
                 <?php /*Petición de Update*/
                     if(isset($_GET['idUpdate']) && $consulta->genero=="Femenino"):?> 
@@ -197,9 +206,11 @@ if(isset($_POST) && !empty($_POST)){
             
             <!--Código postal-->
             <label for="postal">Código postal</label>
+            
             <?php if(isset($_SESSION['ErrRegisUser']['postal'])):?>
                 <span class="error"><?=$_SESSION['ErrRegisUser']['postal']?></span>
             <?php endif?>
+            
             <input type="text" name="postal" maxlength="5"
             <?php /*Petición de Update*/ 
                 if(isset($_GET['idUpdate'])):?>
@@ -208,9 +219,11 @@ if(isset($_POST) && !empty($_POST)){
             
             <!--Provincia-->
             <label for="provincia">Provincia</label>
+            
             <?php if(isset($_SESSION['ErrRegisUser']['provincia'])):?>
                 <span class="error"><?=$_SESSION['ErrRegisUser']['provincia']?></span>
             <?php endif?>
+            
             <input type="text" name="provincia" maxlength="30"
             <?php /*Petición de Update*/ 
                 if(isset($_GET['idUpdate'])):?>
@@ -219,10 +232,14 @@ if(isset($_POST) && !empty($_POST)){
           
             <!--Email-->
             <label for="email">Email</label>
+            
             <!--La validación del email la realizaremos tanto desde HTML como PHP-->
             <?php if(isset($_SESSION['ErrRegisUser']['email'])):?>
                 <span class="error"><?=$_SESSION['ErrRegisUser']['email']?></span>
+            <?php elseif(isset($_SESSION['ErrRegisUser']['emailExist'])):?>
+                <span class="error"><?=$_SESSION['ErrRegisUser']['emailExist']?></span>
             <?php endif?>
+            
             <input type="email" name="email" maxlength="100"
             <?php /*Petición de Update*/
                 if(isset($_GET['idUpdate'])):?>
@@ -241,6 +258,7 @@ if(isset($_POST) && !empty($_POST)){
                 else:?>
                 <label for="pass">Contraseña</label>
             <?php endif?>
+            
             <input type="password" name="pass" maxlength="50">
             
             

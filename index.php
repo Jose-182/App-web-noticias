@@ -7,7 +7,7 @@ require_once 'database/funciones_bd.php';
 require_once 'utils/utils.php';
 require_once 'views/cabecera.php';
 
-//Realizaremos un menú el cual actuara en base al parametro GET que le llegara al pulsar los elementos del menú de navegación.
+//Realizaremos un menú el cual actuará en base al parametro GET que le llegará al pulsar los elementos del menú de navegación.
 if(isset($_GET) && !empty($_GET)){
     
     switch($_GET['pag']){

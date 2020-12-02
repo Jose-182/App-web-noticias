@@ -10,6 +10,7 @@ function getNoticias(){
     
     //*Llamamos a la conexión que tenemos creada para hacer la consulta.
     $consulta=$conexion->query($sql);
+    
     //Comprobamos que la consulta no tenga errores.
     if(!$consulta){
         printf("Errormessage: %s\n", $conexion->error);
@@ -29,6 +30,7 @@ function getAllNoticias(){
     $sql="SELECT * from noticias order by hora_creacion DESC";
     
     $consulta=$conexion->query($sql);
+    
     if(!$consulta){
         printf("Errormessage: %s\n", $conexion->error);
     }
@@ -45,12 +47,13 @@ function createUsers($nombre,$pass,$email,$edad,$fechaNac,$dir,$codPos,$provinci
     //Encriptamos la contraseña antes de insertarla en la base de datos.
     $passEncrypt=password_hash($pass, PASSWORD_BCRYPT, ['cost'=>4]);
 
+    //Al introcudir la fecha mediante la función "STR_TO_DATE" le cambiamos el formato para que sea valido en la base de datos.
     $sql="INSERT INTO usuarios VALUES(null,'$nombre','$passEncrypt','$email',$edad,"
     ."STR_TO_DATE(REPLACE('$fechaNac','/','.') ,GET_FORMAT(date,'EUR')),'$dir','$codPos','$provincia','$genero');";
 
     $consulta=$conexion->query($sql);
 
-    //Crearemos una sesión tanto si la inserción es satisfactoria como si no para informar al cliente.
+    //Crearemos una sesión tanto si la inserción es satisfactoria como si no, para informar al cliente.
     if($consulta){
         $_SESSION['insertOk']="El usuario se a registrado correctamente";
     }
@@ -73,7 +76,7 @@ function createNotice($titulo,$content){
     
     $consulta=$conexion->query($sql);
 
-    //Crearemos una sesión tanto si la inserción es satisfactoria como si no para informar al cliente.
+    //Crearemos una sesión tanto si la inserción es satisfactoria como si no, para informar al cliente.
     if($consulta){
         $_SESSION['insertOk']="La noticia se a registrado correctamente";
     }
@@ -99,7 +102,7 @@ function getUsers(){
         return $consulta;
     }
 }
-//Creamos una función para obtener un usuario en concreto (esta función se utilizara para pedir los datos y actualizar dicho usuario).
+//Creamos una función para obtener un usuario en concreto (esta función se utilizara para pedir los datos y actualizar o borrar dicho usuario).
 function getUser($id){
     
     $conexion=connect();
@@ -134,7 +137,7 @@ function deleteUser($id){
     }
     $conexion->close();
 }
-//Creamos una función para actualizar el usuario, se dará opción a que la contraseña quede vacía por si no quiere cambiarla.
+//Creamos una función para actualizar el usuario, se dará opción a que la contraseña quede vacía por si no se quiere cambiar.
 function updateUser($id,$nombre,$pass,$email,$edad,$fechaNac,$dir,$codPos,$provincia,$genero){
     
     $conexion=connect();
@@ -218,7 +221,7 @@ function deleteNotice($id){
     }
     $conexion->close();
 }
-//Creamos una función para obtener los datos de una noticia en concreto y poder actualizarla.
+//Creamos una función para obtener los datos de una noticia en concreto y poder actualizarla o borrarla.
 function getNotice($id){
     
     $conexion=connect();
