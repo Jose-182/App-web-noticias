@@ -49,7 +49,11 @@ if(isset($_POST) && !empty($_POST)){
         $errors['email']="Email no valido";
     }
     //Si el email ya existe en la base de datos se le avisará al usuario.
-    elseif(startSessionUser($email)->num_rows!=0){
+    elseif(startSessionUser($email)->num_rows!=0 && !isset($_GET['idUpdate'])){
+        $errors['emailExist']="El email introducido ya esta registrado";
+    }
+    //Update email
+    elseif(isset($_GET['idUpdate']) && startSessionUser($email)->num_rows!=0 && $email!=$consulta->email){
         $errors['emailExist']="El email introducido ya esta registrado";
     }
     if(preg_match("/[a-zA-Z]/",$codigoPos) || preg_match($pattern,$codigoPos) || strlen($codigoPos)!=5){

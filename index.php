@@ -1,7 +1,7 @@
 <?php
 //Iniciamos la sesión y requerimos los archivos para el correcto funcionamiento de index.php que sera el archivo base.
 session_start();
-define("URL","http://localhost/DAM_M07_UF03_PAC03_FlorJoseMiguel/index.php");
+define("URL","http://localhost/DAM_M07_UF03_PAC03_FlorRomeroJoseMiguel/index.php");
 require_once 'database/conexion.php';
 require_once 'database/funciones_bd.php';
 require_once 'utils/utils.php';
